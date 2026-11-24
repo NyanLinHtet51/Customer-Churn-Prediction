@@ -15,9 +15,11 @@ from sklearn.pipeline import Pipeline
 from sklearn.impute import SimpleImputer
 from sklearn.preprocessing import OneHotEncoder, StandardScaler
 
+
 from sklearn.linear_model import LogisticRegression
 from sklearn.tree import DecisionTreeClassifier
-from sklearn.ensemble import RandomForestClassifier
+from sklearn.ensemble import RandomForestClassifier, GradientBoostingClassifier
+from sklearn.svm import SVC
 
 from sklearn.metrics import (
     accuracy_score,
@@ -59,11 +61,11 @@ X = df.drop(columns=["customerID", "Churn"])
 y = df["Churn"]
 
 numerical_features = X.select_dtypes(
-    include=["int64", "float64"]
+    include=["number"]
 ).columns.tolist()
 
 categorical_features = X.select_dtypes(
-    include=["object"]
+    include=["object", "str"]
 ).columns.tolist()
 
 print("\nNumerical Features:", numerical_features)
@@ -115,8 +117,8 @@ preprocessor = ColumnTransformer(
 # 7. CREATE MACHINE LEARNING MODELS
 # ==========================================
 
-models = {
 
+models = {
     "Logistic Regression": Pipeline(steps=[
         ("preprocessor", preprocessor),
         ("classifier", LogisticRegression(max_iter=1000))
@@ -140,8 +142,28 @@ models = {
             random_state=42,
             class_weight="balanced"
         ))
-    ])
+    ]),
 
+    "SVM": Pipeline(steps=[
+        ("preprocessor", preprocessor),
+        ("classifier", SVC(
+            kernel="rbf",
+            C=1.0,
+            probability=True,
+            class_weight="balanced",
+            random_state=42
+        ))
+    ]),
+
+    "Gradient Boosting": Pipeline(steps=[
+        ("preprocessor", preprocessor),
+        ("classifier", GradientBoostingClassifier(
+            n_estimators=100,
+            learning_rate=0.1,
+            max_depth=3,
+            random_state=42
+        ))
+    ])
 }
 
 # ==========================================
@@ -287,32 +309,6 @@ feature_importance = feature_importance.sort_values(
     by="Absolute Importance",
     ascending=False
 )
-
-print("\n========== TOP 15 IMPORTANT FEATURES ==========")
-print(feature_importance.head(15))
-
-# Plot feature importance
-
-top_features = feature_importance.head(15).sort_values(
-    by="Coefficient"
-)
-
-plt.figure(figsize=(10, 7))
-
-sns.barplot(
-    data=top_features,
-    x="Coefficient",
-    y="Feature"
-)
-
-plt.title("Top 15 Features Influencing Customer Churn")
-plt.xlabel("Logistic Regression Coefficient")
-plt.ylabel("Features")
-
-plt.axvline(x=0, color="black", linewidth=1)
-
-plt.tight_layout()
-plt.show()
 
 # ==========================================
 # 13. SAVE MODELS AND RESULTS
