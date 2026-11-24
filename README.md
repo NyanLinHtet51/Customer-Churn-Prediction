@@ -61,12 +61,23 @@ The following preprocessing techniques were applied:
 
 ## 6. Machine Learning Models
 
-Three classification models were trained and evaluated:
+This project uses five machine learning algorithms:
 
 1. Logistic Regression
 2. Decision Tree
 3. Random Forest
+4. Support Vector Machine (SVM)
+5. Gradient Boosting
 
+All models are trained using the same training and testing datasets
+and evaluated using:
+
+- Accuracy
+- Precision
+- Recall
+- F1-Score
+
+The Decision Tree achieved the highest F1-Score of 62.28%.
 ## 7. Model Evaluation Results
 
 The models were evaluated using Accuracy, Precision, Recall, and F1-score.
