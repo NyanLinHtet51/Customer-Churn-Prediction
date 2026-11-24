@@ -15,22 +15,28 @@ The project uses customer information and service-related features to train and 
 - Predict customer churn and estimate churn probability.
 - Provide business recommendations to help reduce customer churn.
 
+
 ## 3. Dataset
 
-**Dataset:** Telco Customer Churn
+**Dataset Name:** Telco Customer Churn
 
 **Platform:** Kaggle
 
-**Author:** blastchar
+**Dataset Author:** blastchar
 
-**Source:**
-https://www.kaggle.com/datasets/blastchar/telco-customer-churn
+**Dataset Link:** https://www.kaggle.com/datasets/blastchar/telco-customer-churn
 
+**Dataset Information:**
 - Total records: 7,043
 - Total columns: 21
 - Target variable: Churn
 - Target classes: Yes and No
 
+The dataset contains customer demographic information, subscribed services, contract details, and billing information.
+
+The Kaggle dataset was downloaded and compared with the original IBM dataset. Both datasets were found to be exactly identical.
+
+**Dataset File:** `Telco-Customer-Churn.csv`
 ## 4. Technologies Used
 
 - Python
