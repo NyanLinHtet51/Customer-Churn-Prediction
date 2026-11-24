@@ -58,7 +58,9 @@ selected_model_name = st.selectbox(
         "Select a Model",
         "Logistic Regression",
         "Decision Tree",
-        "Random Forest"
+        "Random Forest",
+        "SVM",
+        "Gradient Boosting"
     ]
 )
 
