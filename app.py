@@ -25,10 +25,6 @@ if not os.path.exists("model_comparison.pkl"):
             [sys.executable, "main.py"],
             check=True
         )
-# Load trained models (cached)
-@st.cache_resource
-def load_models():
-    return joblib.load("model_comparison.pkl")
 
 comparison_data = load_models()
 
