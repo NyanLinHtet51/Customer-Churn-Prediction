@@ -17,20 +17,19 @@ The project uses customer information and service-related features to train and 
 
 ## 3. Dataset
 
-**Dataset:** IBM Telco Customer Churn
+**Dataset:** Telco Customer Churn
 
-**Source:** https://github.com/IBM/telco-customer-churn-on-icp4d
+**Platform:** Kaggle
 
-- Total records: 7,043 customers
-- Original columns: 21
-- Target variable: `Churn`
-- Target classes: `Yes` and `No`
+**Author:** blastchar
 
-The dataset contains customer demographics, subscribed services, contract information, tenure, and billing details.
+**Source:**
+https://www.kaggle.com/datasets/blastchar/telco-customer-churn
 
-To run this project, download the CSV dataset and place it here:
-
-`data/Telco-Customer-Churn.csv`
+- Total records: 7,043
+- Total columns: 21
+- Target variable: Churn
+- Target classes: Yes and No
 
 ## 4. Technologies Used
 
