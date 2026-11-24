@@ -1,19 +1,11 @@
-
 import streamlit as st
 import pandas as pd
 import joblib
 import matplotlib.pyplot as plt
 import seaborn as sns
-
-if "prediction_history" not in st.session_state:
-    st.session_state.prediction_history = []
-
-# Load trained model
-comparison_data = joblib.load("model_comparison.pkl")
-
-models = comparison_data["models"]
-model_results = comparison_data["results"]
-confusion_matrices = comparison_data["confusion_matrices"]
+import os
+import subprocess
+import sys
 
 # Page configuration
 st.set_page_config(
@@ -21,6 +13,25 @@ st.set_page_config(
     page_icon="📊",
     layout="wide"
 )
+
+# Initialize prediction history
+if "prediction_history" not in st.session_state:
+    st.session_state.prediction_history = []
+
+# Train models if the saved model file does not exist
+if not os.path.exists("model_comparison.pkl"):
+    with st.spinner("Training machine learning models for the first time..."):
+        subprocess.run(
+            [sys.executable, "main.py"],
+            check=True
+        )
+
+# Load trained models
+comparison_data = joblib.load("model_comparison.pkl")
+
+models = comparison_data["models"]
+model_results = comparison_data["results"]
+confusion_matrices = comparison_data["confusion_matrices"]
 
 # Application title
 st.title("Customer Churn Prediction Dashboard")
