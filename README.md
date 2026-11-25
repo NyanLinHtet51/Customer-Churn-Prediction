@@ -87,6 +87,8 @@ The models were evaluated using Accuracy, Precision, Recall, and F1-score.
 | Logistic Regression | 80.55% | 65.72% | 55.88% | 60.40% |
 | Decision Tree | 75.59% | 52.79% | 75.94% | 62.28% |
 | Random Forest | 78.14% | 61.70% | 46.52% | 53.05% |
+| SVM | 74.38% | 51.15% | 77.27% | 61.55% |
+| Gradient Boosting | 80.62% | 67.35% | 52.41% | 58.95% |
 
 **Best Model by F1-Score: Decision Tree (62.28%)**
 
@@ -105,7 +107,7 @@ The application provides:
 - Prediction history.
 - Model performance metrics.
 - Confusion matrix visualization.
-- Comparison of all three models' predictions.
+- Comparison of all five models' predictions.
 
 ## 9. Project Structure
 
