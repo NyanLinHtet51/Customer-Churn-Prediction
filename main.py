@@ -281,7 +281,7 @@ plt.show()
 # 13. SAVE MODELS AND RESULTS
 # ==========================================
 
-# Save all three models and their evaluation results
+# Save all five models and their evaluation results
 
 model_comparison = {
     "models": models,
