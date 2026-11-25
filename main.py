@@ -277,39 +277,6 @@ plt.ylim(0, 100)
 plt.legend(loc="best")
 plt.tight_layout()
 plt.show()
-
-# ==========================================
-# 12. LOGISTIC REGRESSION FEATURE IMPORTANCE
-# ==========================================
-
-logistic_model = models["Logistic Regression"]
-
-feature_names = (
-    logistic_model
-    .named_steps["preprocessor"]
-    .get_feature_names_out()
-)
-
-coefficients = (
-    logistic_model
-    .named_steps["classifier"]
-    .coef_[0]
-)
-
-feature_importance = pd.DataFrame({
-    "Feature": feature_names,
-    "Coefficient": coefficients
-})
-
-feature_importance["Absolute Importance"] = (
-    feature_importance["Coefficient"].abs()
-)
-
-feature_importance = feature_importance.sort_values(
-    by="Absolute Importance",
-    ascending=False
-)
-
 # ==========================================
 # 13. SAVE MODELS AND RESULTS
 # ==========================================
