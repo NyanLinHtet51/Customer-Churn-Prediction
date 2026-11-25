@@ -341,6 +341,182 @@ if submit and selected_model_name != "Select a Model":
             "Consider a retention offer or contract upgrade."
         )
 
+# ==========================================
+# BATCH PREDICTION
+# ==========================================
+
+st.divider()
+st.subheader("Batch Prediction")
+
+st.write(
+    "Upload a CSV file containing multiple customer records "
+    "to predict customer churn."
+)
+
+uploaded_file = st.file_uploader(
+    "Upload Customer CSV File",
+    type=["csv"],
+    key="batch_csv"
+)
+
+if uploaded_file is not None:
+
+    if selected_model_name == "Select a Model":
+
+        st.warning("Please select a machine learning model first.")
+
+    else:
+
+        try:
+            batch_df = pd.read_csv(uploaded_file)
+
+            # Required features used during model training
+            required_columns = [
+                "gender",
+                "SeniorCitizen",
+                "Partner",
+                "Dependents",
+                "tenure",
+                "PhoneService",
+                "MultipleLines",
+                "InternetService",
+                "OnlineSecurity",
+                "OnlineBackup",
+                "DeviceProtection",
+                "TechSupport",
+                "StreamingTV",
+                "StreamingMovies",
+                "Contract",
+                "PaperlessBilling",
+                "PaymentMethod",
+                "MonthlyCharges",
+                "TotalCharges"
+            ]
+
+            # Check missing columns
+            missing_columns = [
+                col for col in required_columns
+                if col not in batch_df.columns
+            ]
+
+            if missing_columns:
+
+                st.error(
+                    f"Missing required columns: {missing_columns}"
+                )
+
+            elif batch_df.empty:
+
+                st.warning("The uploaded CSV file is empty.")
+
+            else:
+
+                # Select only the features required by the model
+                batch_input = batch_df[required_columns].copy()
+
+                # Convert numerical columns into numeric values
+                numerical_columns = [
+                    "SeniorCitizen",
+                    "tenure",
+                    "MonthlyCharges",
+                    "TotalCharges"
+                ]
+
+                for col in numerical_columns:
+                    batch_input[col] = pd.to_numeric(
+                        batch_input[col],
+                        errors="coerce"
+                    )
+
+                # Get selected trained model
+                batch_model = models[selected_model_name]
+
+                # Predict customer churn
+                batch_predictions = batch_model.predict(batch_input)
+
+                # Get churn probabilities
+                batch_probabilities = batch_model.predict_proba(
+                    batch_input
+                )
+
+                # Find probability of Churn = Yes
+                classes = list(batch_model.classes_)
+                churn_index = classes.index("Yes")
+
+                churn_probabilities = (
+                    batch_probabilities[:, churn_index] * 100
+                )
+
+                # Determine risk levels
+                risk_levels = []
+
+                for probability in churn_probabilities:
+
+                    if probability < 30:
+                        risk_levels.append("Low Risk")
+
+                    elif probability <= 60:
+                        risk_levels.append("Medium Risk")
+
+                    else:
+                        risk_levels.append("High Risk")
+
+                # Create prediction results
+                result_df = batch_df.copy()
+
+                result_df["Predicted Churn"] = batch_predictions
+
+                result_df["Churn Probability"] = (
+                    churn_probabilities.round(2)
+                )
+
+                result_df["Risk Level"] = risk_levels
+
+                # Display results
+                st.success(
+                    f"Batch prediction completed using {selected_model_name}!"
+                )
+
+                st.subheader("Batch Prediction Results")
+
+                col1, col2, col3 = st.columns(3)
+
+                col1.metric(
+                    "Total Customers",
+                    len(result_df)
+                )
+
+                col2.metric(
+                    "Predicted Churn",
+                    (batch_predictions == "Yes").sum()
+                )
+
+                col3.metric(
+                    "Predicted Stay",
+                    (batch_predictions == "No").sum()
+                )
+
+                st.dataframe(
+                    result_df,
+                    use_container_width=True
+                )
+
+                # Download results
+                csv = result_df.to_csv(
+                    index=False
+                ).encode("utf-8")
+
+                st.download_button(
+                    label="Download Prediction Results",
+                    data=csv,
+                    file_name="customer_churn_predictions.csv",
+                    mime="text/csv"
+                )
+
+        except Exception as e:
+
+            st.error(f"Error processing CSV file: {e}")
+
 st.divider()
 st.subheader("Customer Prediction History")
 
