@@ -72,22 +72,7 @@ print("\nNumerical Features:", numerical_features)
 print("Categorical Features:", categorical_features)
 
 # ==========================================
-# 5. TRAIN-TEST SPLIT
-# ==========================================
-
-X_train, X_test, y_train, y_test = train_test_split(
-    X,
-    y,
-    test_size=0.2,
-    random_state=42,
-    stratify=y
-)
-
-print("\nTraining Shape:", X_train.shape)
-print("Testing Shape:", X_test.shape)
-
-# ==========================================
-# 6. DATA PREPROCESSING
+# 5. DATA PREPROCESSING
 # ==========================================
 
 # Numerical data preprocessing
@@ -112,6 +97,21 @@ preprocessor = ColumnTransformer(
         ("cat", categorical_transformer, categorical_features)
     ]
 )
+
+# ==========================================
+# 6. TRAIN-TEST SPLIT
+# ==========================================
+
+X_train, X_test, y_train, y_test = train_test_split(
+    X,
+    y,
+    test_size=0.2,
+    random_state=42,
+    stratify=y
+)
+
+print("\nTraining Shape:", X_train.shape)
+print("Testing Shape:", X_test.shape)
 
 # ==========================================
 # 7. CREATE MACHINE LEARNING MODELS
